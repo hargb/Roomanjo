@@ -10,9 +10,12 @@ const Home = () => {
   return (
     <div>
       <Head>
-        <title>
-          Roomanjo: India's Best online hotel booking Site for Sanitized Stay
-        </title>
+      <title>
+  Roomanjo: India&apos;s Best online hotel booking Site for Sanitized Stay
+</title>
+
+        
+        
       </Head>
 
       <Header1 />
