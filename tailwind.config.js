@@ -8,11 +8,14 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        "login-background":'url("/hotel.jpg")',
+        "login-background": 'url("/hotel.jpg")',
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      height:{
-        'large-box':'400px'
-      }
+      height: {
+        "large-box": "400px",
+      },
     },
   },
   plugins: [],

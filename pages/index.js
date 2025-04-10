@@ -15,9 +15,9 @@ const Home = () => {
           Roomanjo: India's Best online hotel booking Site for Sanitized Stay
         </title>
       </Head>
-      <Header1></Header1>
-      <Header2></Header2>
-      <Header3></Header3>
+      <Header1 />
+      <Header2 />
+      <Header3 />
 
       <div className="mx-20">
         <div className="my-14">
@@ -38,7 +38,7 @@ const Home = () => {
             className="h-60 w-full"
           />
         </div>
-        <Header4></Header4>
+        <Header4 />
       </div>
       <Footer />
     </div>
