@@ -7,7 +7,6 @@ import Image from "next/image";
 import Head from "next/head";
 
 const Home = () => {
-  console.log(Header1, Header2, Header3, Header4, Footer);
   return (
     <div>
       <Head>
@@ -15,6 +14,7 @@ const Home = () => {
           Roomanjo: India's Best online hotel booking Site for Sanitized Stay
         </title>
       </Head>
+
       <Header1 />
       <Header2 />
       <Header3 />
@@ -22,24 +22,26 @@ const Home = () => {
       <div className="mx-20">
         <div className="my-14">
           <Image
-            src={"/banner3.jpg"}
-            alt="banner3"
-            width={200}
-            height={300}
-            className="h-80 w-full"
+            src="/banner3.jpg"
+            alt="Roomanjo promotional banner 1"
+            width={1200}
+            height={320}
+            className="w-full h-80 object-cover rounded-lg"
           />
         </div>
         <div className="mb-14">
           <Image
-            src={"/banner2.avif"}
-            alt="banner3"
-            width={200}
-            height={200}
-            className="h-60 w-full"
+            src="/banner2.avif"
+            alt="Roomanjo promotional banner 2"
+            width={1200}
+            height={250}
+            className="w-full h-60 object-cover rounded-lg"
           />
         </div>
+
         <Header4 />
       </div>
+
       <Footer />
     </div>
   );
