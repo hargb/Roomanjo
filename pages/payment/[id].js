@@ -1,6 +1,5 @@
 import axios from "axios";
 import Script from "next/script";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 const Payment = () => {
@@ -41,17 +40,12 @@ const Payment = () => {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.Razorpay) {
-      makePayment();
-    }
-  }, [router.query?.id]);
-
   return (
     <>
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="beforeInteractive"
+        onLoad={makePayment} // ✅ Key fix
       />
       <div className="text-center text-xl mt-20 text-gray-500">
         Please wait, redirecting to payment gateway...
