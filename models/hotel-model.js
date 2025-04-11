@@ -32,9 +32,14 @@ const hotelSchema = new mongoose.Schema(
         name: String,
       },
     ],
-    location: {
+    city: {
       type: String,
+      required: true,
+      trim: true,
     },
+    
+   
+   
   },
   { timestamps: true } // Added spacing for readability
 );
