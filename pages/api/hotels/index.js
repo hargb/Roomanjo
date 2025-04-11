@@ -2,19 +2,33 @@ import connectDB from "@/db";
 import Hotel from "@/models/hotel-model";
 
 export default async function handler(req, res) {
-  await connectDB();
-  //   if (req.method === "POST") {
-  //     const newHotel = new Hotel(req.body);
-  //     const result = await newHotel.save();
-  //     res.status(201).json({ msg: "Hotel added !", result });
-  //   }
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
 
-  if (req.method === "GET") {
-    const hotels = await Hotel.find({ location: req.query.city });
-    if (hotels.length > 0) {
-      return res.status(200).json({ msg: "Good", hotels });
+  try {
+    await connectDB();
+
+    const city = req.query.city?.trim();
+
+    let hotels;
+
+    if (city && city !== "") {
+      // If city is provided, filter by city or name
+      hotels = await Hotel.find({
+        $or: [
+          { city: { $regex: city, $options: "i" } },
+          { name: { $regex: city, $options: "i" } },
+        ],
+      });
+    } else {
+      // If city is not provided, return all hotels
+      hotels = await Hotel.find({});
     }
-    const allhotels = await Hotel.find({});
-    return res.status(200).json({ msg: "Good", allhotels });
+
+    return res.status(200).json({ hotels });
+  } catch (err) {
+    console.error("🔥 API /api/hotels error:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 }
