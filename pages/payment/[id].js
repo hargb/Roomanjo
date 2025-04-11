@@ -13,7 +13,7 @@ const Payment = () => {
     const { data } = await axios.post(`/api/razorpay`, val);
 
     const options = {
-      key: process.env.RAZORPAY_KEY,
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
       name: "Aditya",
       currency: data.currency,
       amount: data.amount,

@@ -47,92 +47,93 @@ const Login = () => {
     }
   };
 
-  const handleToggle = () => {
-    setLogin(!login);
-  };
+  const handleToggle = () => setLogin(!login);
 
   return (
-    <div>
+    <>
       <Head>
-        <title>Roomanjo-login</title>
+        <title>Roomanjo - Login</title>
       </Head>
-      <div className="flex h-screen justify-center items-center relative bg-login-background bg-no-repeat bg-cover opacity-85">
-        <div className="absolute w-full top-10 px-20 flex items-center">
-          <h2 className="text-5xl font-bold mr-5 text-white">Roomanjo</h2>
-          <p className="font-bold text-2xl -my-7 text-white">
+
+      <div className="flex flex-col min-h-screen justify-center items-center bg-login-background bg-cover bg-no-repeat relative px-4">
+        {/* Overlay Heading */}
+        <div className="absolute top-5 w-full px-4 sm:px-10 flex flex-col sm:flex-row justify-between items-center">
+          <h2 className="text-4xl font-bold text-white">Roomanjo</h2>
+          <p className="text-white font-semibold text-center sm:text-left mt-2 sm:mt-0">
             Hotels and homes across more than 10 cities
           </p>
         </div>
-        <div className="flex justify-center w-9/12 items-center">
-          <div>
-            <p className="font-bold text-5xl text-justify text-white">
-              There is a Smarter way to Roomanjo around
+
+        <div className="flex flex-col-reverse lg:flex-row w-full max-w-6xl items-center justify-center mt-20 gap-10">
+          {/* Left Info Section */}
+          <div className="text-white text-center lg:text-left max-w-xl">
+            <p className="text-3xl sm:text-4xl font-bold mb-4">
+              There is a smarter way to Roomanjo around
             </p>
-            <p className="text-2xl mt-5 text-justify text-gray-400">
-              Sign up with your phone number and get exclusive access to
-              discounts and savings on Roomanjo stays with our many travel
-              partners.
+            <p className="text-lg text-gray-300">
+              Sign up and get exclusive access to discounts and savings on
+              Roomanjo stays with our many travel partners.
             </p>
           </div>
-          <div className=" ml-20 pb-40 w-10/12 border bg-slate-50">
-            <p className="h-10 flex items-center px-10 bg-gradient-to-r from-green-300 to bg-yellow-500 text-lg font-bold text-blue-950">
+
+          {/* Login Form */}
+          <div className="w-full sm:w-[400px] bg-white rounded-lg shadow-lg overflow-hidden">
+            <p className="h-10 flex items-center px-4 bg-gradient-to-r from-green-300 to-yellow-400 text-base font-bold text-blue-950">
               Sign up & get ₹500 Roomanjo Money
             </p>
-            <div className="px-10">
-              <h3 className="text-5xl font-bold my-5">Login / Signup</h3>
-              <p className="font-bold text-lg mb-1">
+
+            <div className="px-6 py-6">
+              <h3 className="text-2xl font-bold mb-4">Login / Signup</h3>
+              <p className="font-semibold text-sm mb-4">
                 Please enter your email and password to continue
               </p>
-              {login ? (
-                ""
-              ) : (
+
+              {!login && (
                 <input
                   type="text"
-                  placeholder="Enter your name....."
-                  className="outline-none border border-black px-3 py-1 my-3 w-96 h-10"
+                  placeholder="Enter your name"
+                  className="w-full border border-gray-400 px-3 py-2 rounded mb-4 outline-none"
                   onChange={(e) => setName(e.target.value)}
                 />
               )}
 
               <input
                 type="email"
-                placeholder="Enter your Email....."
-                className="outline-none border border-black px-3 py-1 my-3 w-96 h-10"
+                placeholder="Enter your email"
+                className="w-full border border-gray-400 px-3 py-2 rounded mb-4 outline-none"
                 onChange={(e) => setEmail(e.target.value)}
               />
 
               <input
                 type="password"
-                placeholder="Enter your password....."
-                className="outline-none border border-black px-3 py-1 my-3 w-96 h-10"
+                placeholder="Enter your password"
+                className="w-full border border-gray-400 px-3 py-2 rounded mb-5 outline-none"
                 onChange={(e) => setPassword(e.target.value)}
               />
 
               <button
-                type="submit"
-                className="w-96 h-14 text-lg font-bold bg-red-400 hover:cursor-pointer hover:bg-red600 text-white my-5 rounded-lg"
+                type="button"
                 onClick={login ? handleLogin : handlesignUp}
+                className="w-full h-12 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg transition mb-4"
               >
-                {login ? "Login" : " Sign Up"}
+                {login ? "Login" : "Sign Up"}
               </button>
-              <p className="my-1 text-xl">
-                <span>
-                  {login
-                    ? "Don't have an account?"
-                    : "Already have an account?"}
-                </span>
-                <span
-                  className="ml-1 border-b-2 border-red-500 text-red-600 pb-1 hover:cursor-pointer"
+
+              <p className="text-sm text-center">
+                {login ? "Don't have an account?" : "Already have an account?"}{" "}
+                <button
+                  type="button"
                   onClick={handleToggle}
+                  className="text-red-600 underline ml-1"
                 >
                   {login ? "Sign Up" : "Login"}
-                </span>
+                </button>
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

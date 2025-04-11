@@ -10,40 +10,40 @@ const Home = () => {
   return (
     <div>
       <Head>
-      <title>
-  Roomanjo: India&apos;s Best online hotel booking Site for Sanitized Stay
-</title>
-
-        
-        
+        <title>
+          Roomanjo: India&apos;s Best Online Hotel Booking Site for Sanitized Stay
+        </title>
       </Head>
 
       <Header1 />
       <Header2 />
       <Header3 />
 
-      <div className="mx-20">
-        <div className="my-14">
+      <main className="px-4 sm:px-8 lg:px-20 py-10">
+        {/* Banner 1 */}
+        <div className="mb-10">
           <Image
             src="/banner3.jpg"
             alt="Roomanjo promotional banner 1"
             width={1200}
             height={320}
-            className="w-full h-80 object-cover rounded-lg"
+            className="w-full h-64 sm:h-80 object-cover rounded-lg"
           />
         </div>
-        <div className="mb-14">
+
+        {/* Banner 2 */}
+        <div className="mb-10">
           <Image
             src="/banner2.avif"
             alt="Roomanjo promotional banner 2"
             width={1200}
             height={250}
-            className="w-full h-60 object-cover rounded-lg"
+            className="w-full h-60 sm:h-72 object-cover rounded-lg"
           />
         </div>
 
         <Header4 />
-      </div>
+      </main>
 
       <Footer />
     </div>

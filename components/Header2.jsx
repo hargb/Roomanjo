@@ -10,10 +10,15 @@ const Header2 = () => {
   ];
 
   return (
-    <div>
-      <div className="flex px-10 py-3 bg-gray-100 justify-between">
-        {List.map((e) => (
-          <span key={e.id}>{e.name}</span>
+    <div className="bg-gray-100 w-full">
+      <div className="flex flex-wrap justify-center sm:justify-between px-4 sm:px-10 py-3 text-sm sm:text-base font-medium gap-4 sm:gap-0">
+        {List.map((city) => (
+          <span
+            key={city.id}
+            className="cursor-pointer hover:text-blue-600 transition"
+          >
+            {city.name}
+          </span>
         ))}
       </div>
     </div>

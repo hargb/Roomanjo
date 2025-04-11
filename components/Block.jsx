@@ -1,18 +1,23 @@
 import Image from "next/image";
 
-const Block = ({ title, para, imageSrc, imageWidth, imageHeight }) => {
+const Block = ({ title, para, imageSrc, imageWidth = 64, imageHeight = 64 }) => {
   return (
-    <div className=" border-r border-gray-300 w-60 h-full flex items-center px-3">
-      <Image
-        src={imageSrc}
-        alt="demo"
-        width={200}
-        height={200}
-        className="w-10 h-10 rounded-full mr-5"
-      />
-      <div>
-        <h3 className=" font-bold">{title}</h3>
-        <p className=" text-gray-400 text-xs line-clamp-1">{para}</p>
+    <div className="flex items-center px-4 py-3 w-full sm:w-60 border-r border-gray-300">
+      {/* Image Section */}
+      <div className="flex-shrink-0">
+        <Image
+          src={imageSrc}
+          alt="demo"
+          width={imageWidth}
+          height={imageHeight}
+          className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover mr-4"
+        />
+      </div>
+
+      {/* Text Section */}
+      <div className="flex flex-col">
+        <h3 className="font-semibold text-sm sm:text-base">{title}</h3>
+        <p className="text-gray-500 text-xs sm:text-sm line-clamp-1">{para}</p>
       </div>
     </div>
   );

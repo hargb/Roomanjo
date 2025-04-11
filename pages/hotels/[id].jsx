@@ -1,4 +1,5 @@
 "use client";
+
 import Head from "next/head";
 import Image from "next/image";
 import Cookies from "js-cookie";
@@ -6,16 +7,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const SingleHotel = ({ hotel }) => {
-  console.log("Hotel Data:", hotel); // ✅ Debugging
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
     const cookie = Cookies.get("user");
-    if (cookie) {
-      setAuth(true);
-      return;
-    }
-    setAuth(false);
+    setAuth(!!cookie);
   }, []);
 
   return (
@@ -23,57 +19,62 @@ const SingleHotel = ({ hotel }) => {
       <Head>
         <title>{hotel?.name}</title>
       </Head>
-      <div className="w-7/12 mx-auto my-10 ">
+
+      <div className="w-full max-w-4xl mx-auto my-10 px-4 sm:px-6">
+        {/* Hotel Banner */}
         <Image
           src={hotel?.banner}
           alt="hotel"
           width={2000}
-          height={2000}
-          className=" w-full h-large-box my-5"
+          height={1000}
+          className="w-full h-auto rounded-lg object-cover mb-6"
+          priority
         />
-        <div className=" ">
-          <h3 className=" text-3xl font-bold">{hotel?.name}</h3>
-          <p className=" text-xl my-5 text-justify">{hotel?.description}</p>
-          <button className=" w-60 h-14 rounded-lg bg-blue-400 text-lg">
-            Price : &#8377; {hotel?.price}
+
+        {/* Hotel Details */}
+        <div className="text-gray-800">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3">{hotel?.name}</h3>
+
+          <p className="text-base sm:text-lg text-justify mb-6">
+            {hotel?.description}
+          </p>
+
+          <button className="w-full sm:w-60 h-12 bg-blue-500 text-white text-lg font-medium rounded-lg mb-6 hover:bg-blue-600 transition">
+            Price: ₹{hotel?.price}
           </button>
-          <p className=" text-3xl font-bold my-5">Facilities : </p>
-          <ul className=" flex text-xl justify-between">
-            {hotel
-              ? hotel.facilities?.map((ele) => {
-                  return (
-                    <li
-                      key={ele.name}
-                      className=" mr-10 mb-3 flex items-center"
-                    >
-                      <span>
-                        <Image
-                          src={ele.img}
-                          width={200}
-                          height={200}
-                          className="w-8 h-8 rounded-full"
-                        />
-                      </span>
-                      <span className="ml-5">{ele.name}</span>
-                    </li>
-                  );
-                })
-              : ""}
+
+          {/* Facilities */}
+          <p className="text-xl sm:text-2xl font-semibold mb-4">Facilities:</p>
+          <ul className="flex flex-wrap gap-5 mb-8">
+            {hotel?.facilities?.map((ele, idx) => (
+              <li key={idx} className="flex items-center gap-3">
+                <Image
+                  src={ele.img}
+                  alt={ele.name}
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 rounded-full"
+                />
+                <span className="text-base">{ele.name}</span>
+              </li>
+            ))}
           </ul>
+
+          {/* Booking Section */}
           {auth ? (
             <Link href={`/payment/${hotel?._id}`}>
-              <button className=" w-60 h-14 rounded-lg bg-red-400 my-5 text-lg">
+              <button className="w-full sm:w-60 h-12 bg-red-500 text-white text-lg font-semibold rounded-lg hover:bg-red-600 transition">
                 Book Now
               </button>
             </Link>
           ) : (
-            <span className=" text-2xl">
+            <p className="text-lg sm:text-xl">
               Please{" "}
-              <Link href={"/login"} className=" text-blue-500">
-                Log in
+              <Link href="/login" className="text-blue-600 underline">
+                log in
               </Link>{" "}
-              to get new Offers !
-            </span>
+              to get new offers!
+            </p>
           )}
         </div>
       </div>
@@ -84,7 +85,6 @@ const SingleHotel = ({ hotel }) => {
 export async function getServerSideProps(ctx) {
   const res = await fetch(`${process.env.BASE_URL}/api/hotels/${ctx.query.id}`);
   const data = await res.json();
-  console.log("Fetched Data: ", data); // ✅ Debugging
 
   return {
     props: {
@@ -92,6 +92,5 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
-
 
 export default SingleHotel;
