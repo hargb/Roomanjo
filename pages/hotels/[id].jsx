@@ -42,9 +42,7 @@ const SingleHotel = ({ hotel }) => {
 
         {/* Hotel Details */}
         <div className="text-gray-800">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-3">
-            {hotel?.name}
-          </h3>
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3">{hotel?.name}</h3>
 
           <p className="text-base sm:text-lg text-justify mb-6">
             {hotel?.description}
@@ -104,8 +102,7 @@ export async function getServerSideProps(ctx) {
       };
     }
 
-    const res = await fetch(`https://roomanjo-ugty.vercel.app/api/hotels?city=${city}`);
-
+    const res = await fetch(`https://roomanjo-ugty.vercel.app/api/hotels/${id}`);
     const data = await res.json();
 
     return {
