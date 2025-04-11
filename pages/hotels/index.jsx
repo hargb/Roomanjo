@@ -9,6 +9,7 @@ const Hotels = ({ hotels }) => {
   const [list, setList] = useState([]);
   const [checkedList, setCheckedList] = useState([]);
 
+  // Handle facilities filter
   const handleCheckList = async () => {
     try {
       const { data } = await axios.get(
@@ -20,11 +21,10 @@ const Hotels = ({ hotels }) => {
     }
   };
 
+  // Handle price filter
   const handlePrice = async () => {
     try {
-      const { data } = await axios.get(
-        `/api/facilities/range?price=${price}`
-      );
+      const { data } = await axios.get(`/api/facilities/range?price=${price}`);
       if (data?.hotels) setList(data.hotels);
     } catch (error) {
       console.error("Price filter error:", error);
@@ -66,16 +66,29 @@ const Hotels = ({ hotels }) => {
 };
 
 export async function getServerSideProps(ctx) {
-  const res = await fetch(
-    `${process.env.BASE_URL}/api/hotels?city=${ctx.query.city}`
-  );
-  const data = await res.json();
+  const city = ctx.query.city || "";
 
-  return {
-    props: {
-      hotels: data.hotels ? data.hotels : data.allhotels,
-    },
-  };
+  const protocol = ctx.req.headers["x-forwarded-proto"] || "http";
+  const host = ctx.req.headers.host;
+  const baseUrl = `${protocol}://${host}`;
+
+  try {
+    const res = await fetch(`${baseUrl}/api/hotels?city=${city}`);
+    const data = await res.json();
+
+    return {
+      props: {
+        hotels: data.hotels || [],
+      },
+    };
+  } catch (error) {
+    console.error("🔥 Error in getServerSideProps:", error);
+    return {
+      props: {
+        hotels: [],
+      },
+    };
+  }
 }
 
 export default Hotels;
