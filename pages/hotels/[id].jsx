@@ -104,7 +104,8 @@ export async function getServerSideProps(ctx) {
       };
     }
 
-    const res = await fetch(`${process.env.BASE_URL}/api/hotels/${id}`);
+    const res = await fetch(`https://roomanjo-ugty.vercel.app/api/hotels?city=${city}`);
+
     const data = await res.json();
 
     return {
