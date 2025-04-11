@@ -2,6 +2,7 @@ import Filters from "@/components/Filters";
 import Header1 from "@/components/Header1";
 import Hotel from "@/components/Hotel";
 import connectDB from "@/db";
+import HotelModel from "@/models/hotel-model"; // DB model for direct query
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -73,24 +74,30 @@ const Hotels = ({ hotels }) => {
 
 export async function getServerSideProps(ctx) {
   try {
-    await connectDB(); // ✅ Important for server-side MongoDB access
+    await connectDB();
 
     const city = ctx.query.city || "";
 
-    const protocol = ctx.req.headers["x-forwarded-proto"] || "http";
-    const host = ctx.req.headers.host;
-    const baseUrl = `${protocol}://${host}`;
+    let hotels;
 
-    const res = await fetch(`${baseUrl}/api/hotels?city=${city}`);
-    const data = await res.json();
+    if (city && city !== "") {
+      hotels = await HotelModel.find({
+        $or: [
+          { city: { $regex: city, $options: "i" } },
+          { name: { $regex: city, $options: "i" } },
+        ],
+      });
+    } else {
+      hotels = await HotelModel.find({});
+    }
 
     return {
       props: {
-        hotels: data.hotels || [],
+        hotels: JSON.parse(JSON.stringify(hotels)),
       },
     };
   } catch (error) {
-    console.error("🔥 Error in getServerSideProps:", error);
+    console.error("🔥 getServerSideProps error:", error.message);
     return {
       props: {
         hotels: [],
