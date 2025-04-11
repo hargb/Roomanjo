@@ -5,39 +5,57 @@ import { useRouter } from "next/router";
 
 const Payment = () => {
   const router = useRouter();
-  
+
   const makePayment = async () => {
-    const val = {
-      id: router.query?.id,
-    };
-    const { data } = await axios.post(`/api/razorpay`, val);
+    try {
+      const val = {
+        id: router.query?.id,
+      };
 
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
-      name: "Aditya",
-      currency: data.currency,
-      amount: data.amount,
-      order_id: data.id,
-      description: "Thank You !",
-      handler: function (response) {},
-      prefill: {
-        name: "Aditya",
-        email: "adi@gmail.com",
-        contact: 987654321,
-      },
-    };
+      const { data } = await axios.post(`/api/razorpay`, val);
 
-    const paymentObj = new window.Razorpay(options);
-    paymentObj.open();
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
+        name: "Roomanjo Hotel Booking",
+        currency: data.currency,
+        amount: data.amount,
+        order_id: data.id,
+        description: "Thanks for booking!",
+        handler: function (response) {
+          alert("✅ Payment Success! ID: " + response.razorpay_payment_id);
+        },
+        prefill: {
+          name: "Harsh Aggarwal",
+          email: "harsh@email.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#007bff",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("❌ Payment Error:", err);
+    }
   };
 
   useEffect(() => {
-    makePayment();
-  }, []);
+    if (typeof window !== "undefined" && window.Razorpay) {
+      makePayment();
+    }
+  }, [router.query?.id]);
 
   return (
     <>
-      <Script src="http://checkout.razorpay.com/v1/checkout.js" />
+      <Script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        strategy="beforeInteractive"
+      />
+      <div className="text-center text-xl mt-20 text-gray-500">
+        Please wait, redirecting to payment gateway...
+      </div>
     </>
   );
 };
