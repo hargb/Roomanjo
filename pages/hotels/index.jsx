@@ -1,15 +1,16 @@
 import Filters from "@/components/Filters";
 import Header1 from "@/components/Header1";
 import Hotel from "@/components/Hotel";
-import axios from "axios";
+import connectDB from "@/db";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Hotels = ({ hotels }) => {
   const [price, setPrice] = useState(3500);
   const [list, setList] = useState([]);
   const [checkedList, setCheckedList] = useState([]);
 
-  // Handle facilities filter
+  // 🔍 Filter by facilities
   const handleCheckList = async () => {
     try {
       const { data } = await axios.get(
@@ -21,7 +22,7 @@ const Hotels = ({ hotels }) => {
     }
   };
 
-  // Handle price filter
+  // 🔍 Filter by price
   const handlePrice = async () => {
     try {
       const { data } = await axios.get(`/api/facilities/range?price=${price}`);
@@ -59,6 +60,11 @@ const Hotels = ({ hotels }) => {
               <Hotel e={e} />
             </div>
           ))}
+          {hotels.length === 0 && list.length === 0 && (
+            <div className="text-center text-gray-500 text-xl">
+              No hotels found 😕
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -66,13 +72,15 @@ const Hotels = ({ hotels }) => {
 };
 
 export async function getServerSideProps(ctx) {
-  const city = ctx.query.city || "";
-
-  const protocol = ctx.req.headers["x-forwarded-proto"] || "http";
-  const host = ctx.req.headers.host;
-  const baseUrl = `${protocol}://${host}`;
-
   try {
+    await connectDB(); // ✅ Important for server-side MongoDB access
+
+    const city = ctx.query.city || "";
+
+    const protocol = ctx.req.headers["x-forwarded-proto"] || "http";
+    const host = ctx.req.headers.host;
+    const baseUrl = `${protocol}://${host}`;
+
     const res = await fetch(`${baseUrl}/api/hotels?city=${city}`);
     const data = await res.json();
 
