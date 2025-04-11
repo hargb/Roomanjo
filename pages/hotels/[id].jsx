@@ -14,6 +14,14 @@ const SingleHotel = ({ hotel }) => {
     setAuth(!!cookie);
   }, []);
 
+  if (!hotel) {
+    return (
+      <div className="text-center py-20 text-xl text-red-600">
+        ⚠️ Hotel not found or failed to load. Please try again.
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -21,7 +29,6 @@ const SingleHotel = ({ hotel }) => {
       </Head>
 
       <div className="w-full max-w-4xl mx-auto my-10 px-4 sm:px-6">
-        {/* Hotel Banner */}
         <Image
           src={hotel?.banner}
           alt="hotel"
@@ -31,10 +38,8 @@ const SingleHotel = ({ hotel }) => {
           priority
         />
 
-        {/* Hotel Details */}
         <div className="text-gray-800">
           <h3 className="text-2xl sm:text-3xl font-bold mb-3">{hotel?.name}</h3>
-
           <p className="text-base sm:text-lg text-justify mb-6">
             {hotel?.description}
           </p>
@@ -43,7 +48,6 @@ const SingleHotel = ({ hotel }) => {
             Price: ₹{hotel?.price}
           </button>
 
-          {/* Facilities */}
           <p className="text-xl sm:text-2xl font-semibold mb-4">Facilities:</p>
           <ul className="flex flex-wrap gap-5 mb-8">
             {hotel?.facilities?.map((ele, idx) => (
@@ -60,7 +64,6 @@ const SingleHotel = ({ hotel }) => {
             ))}
           </ul>
 
-          {/* Booking Section */}
           {auth ? (
             <Link href={`/payment/${hotel?._id}`}>
               <button className="w-full sm:w-60 h-12 bg-red-500 text-white text-lg font-semibold rounded-lg hover:bg-red-600 transition">
@@ -83,14 +86,33 @@ const SingleHotel = ({ hotel }) => {
 };
 
 export async function getServerSideProps(ctx) {
-  const res = await fetch(`${process.env.BASE_URL}/api/hotels/${ctx.query.id}`);
-  const data = await res.json();
+  try {
+    const id = ctx.query.id;
 
-  return {
-    props: {
-      hotel: data.hotel,
-    },
-  };
+    // 🛑 Prevent undefined ID
+    if (!id) {
+      return {
+        notFound: true,
+      };
+    }
+
+    const res = await fetch(`${process.env.BASE_URL}/api/hotels/${id}`);
+    const data = await res.json();
+
+    return {
+      props: {
+        hotel: data?.hotel || null,
+      },
+    };
+  } catch (error) {
+    console.error("❌ Error fetching single hotel:", error);
+
+    return {
+      props: {
+        hotel: null,
+      },
+    };
+  }
 }
 
 export default SingleHotel;

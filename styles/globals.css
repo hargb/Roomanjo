@@ -15,17 +15,14 @@
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
+/* Hide scrollbar for scrollable banners */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 body {
   color: rgb(var(--foreground-rgb));
