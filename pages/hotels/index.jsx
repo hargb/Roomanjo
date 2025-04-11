@@ -2,7 +2,7 @@ import Filters from "@/components/Filters";
 import Header1 from "@/components/Header1";
 import Hotel from "@/components/Hotel";
 import connectDB from "@/db";
-import HotelModel from "@/models/hotel-model"; // DB model for direct query
+import HotelModel from "@/models/hotel-model";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -11,7 +11,6 @@ const Hotels = ({ hotels }) => {
   const [list, setList] = useState([]);
   const [checkedList, setCheckedList] = useState([]);
 
-  // 🔍 Filter by facilities
   const handleCheckList = async () => {
     try {
       const { data } = await axios.get(
@@ -23,7 +22,6 @@ const Hotels = ({ hotels }) => {
     }
   };
 
-  // 🔍 Filter by price
   const handlePrice = async () => {
     try {
       const { data } = await axios.get(`/api/facilities/range?price=${price}`);
@@ -43,7 +41,6 @@ const Hotels = ({ hotels }) => {
     <>
       <Header1 />
       <div className="flex flex-col lg:flex-row px-4 py-6 gap-6">
-        {/* Filters Sidebar */}
         <div className="w-full lg:w-1/4">
           <Filters
             price={price}
@@ -53,8 +50,6 @@ const Hotels = ({ hotels }) => {
             setCheckedList={setCheckedList}
           />
         </div>
-
-        {/* Hotels Listing */}
         <div className="w-full lg:w-3/4">
           {(list.length > 0 ? list : hotels)?.map((e) => (
             <div key={e._id} className="mb-6">
@@ -83,8 +78,14 @@ export async function getServerSideProps(ctx) {
     if (city && city !== "") {
       hotels = await HotelModel.find({
         $or: [
-          { city: { $regex: city, $options: "i" } },
-          { name: { $regex: city, $options: "i" } },
+          {
+            $expr: {
+              $eq: [{ $toLower: "$city" }, city.toLowerCase()],
+            },
+          },
+          {
+            name: { $regex: city, $options: "i" },
+          },
         ],
       });
     } else {
