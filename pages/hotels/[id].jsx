@@ -14,6 +14,7 @@ const SingleHotel = ({ hotel }) => {
     setAuth(!!cookie);
   }, []);
 
+  // Fallback UI if hotel is null
   if (!hotel) {
     return (
       <div className="text-center py-20 text-xl text-red-600">
@@ -29,6 +30,7 @@ const SingleHotel = ({ hotel }) => {
       </Head>
 
       <div className="w-full max-w-4xl mx-auto my-10 px-4 sm:px-6">
+        {/* Hotel Banner */}
         <Image
           src={hotel?.banner}
           alt="hotel"
@@ -38,8 +40,12 @@ const SingleHotel = ({ hotel }) => {
           priority
         />
 
+        {/* Hotel Details */}
         <div className="text-gray-800">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-3">{hotel?.name}</h3>
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3">
+            {hotel?.name}
+          </h3>
+
           <p className="text-base sm:text-lg text-justify mb-6">
             {hotel?.description}
           </p>
@@ -48,6 +54,7 @@ const SingleHotel = ({ hotel }) => {
             Price: ₹{hotel?.price}
           </button>
 
+          {/* Facilities */}
           <p className="text-xl sm:text-2xl font-semibold mb-4">Facilities:</p>
           <ul className="flex flex-wrap gap-5 mb-8">
             {hotel?.facilities?.map((ele, idx) => (
@@ -64,6 +71,7 @@ const SingleHotel = ({ hotel }) => {
             ))}
           </ul>
 
+          {/* Booking Button or Login Prompt */}
           {auth ? (
             <Link href={`/payment/${hotel?._id}`}>
               <button className="w-full sm:w-60 h-12 bg-red-500 text-white text-lg font-semibold rounded-lg hover:bg-red-600 transition">
@@ -89,7 +97,7 @@ export async function getServerSideProps(ctx) {
   try {
     const id = ctx.query.id;
 
-    // 🛑 Prevent undefined ID
+    // 🛑 Prevent fetch crash if no ID is provided
     if (!id) {
       return {
         notFound: true,
